@@ -20,8 +20,7 @@ class PlaylistCrew:
         expert_music_curator = agents.expert_music_curator(
             agent_callback=agent_callback
         )
-        spotify_song_finder = agents.spotify_song_finder()
-        spotify_playlist_creator = agents.spotify_playlist_creator()
+        spotify_api_expert = agents.spotify_api_expert()
 
         # Custom Tasks definition
         find_user_needs = tasks.extract_info_from_text(
@@ -30,13 +29,9 @@ class PlaylistCrew:
         )
 
         find_songs = tasks.search_for_songs(expert_music_curator)
-
-        search_spotify_uri = tasks.search_spotify_uri_songs(
-            spotify_song_finder,
-        )
-
-        spotify_creator = tasks.create_spotify_playlist(
-            spotify_playlist_creator,
+        search_spotify_uri_songs = tasks.search_spotify_uri_songs(spotify_api_expert)
+        create_spotify_playlist = tasks.create_spotify_playlist(
+            spotify_api_expert,
             self.access_token,
         )
 
@@ -45,10 +40,14 @@ class PlaylistCrew:
             agents=[
                 expert_text_analyzer,
                 expert_music_curator,
-                spotify_song_finder,
-                spotify_playlist_creator,
+                spotify_api_expert,
             ],
-            tasks=[find_user_needs, find_songs, search_spotify_uri, spotify_creator],
+            tasks=[
+                find_user_needs,
+                find_songs,
+                search_spotify_uri_songs,
+                create_spotify_playlist,
+            ],
             verbose=True,
             step_callback=crew_callback if crew_callback is not None else None,
         )

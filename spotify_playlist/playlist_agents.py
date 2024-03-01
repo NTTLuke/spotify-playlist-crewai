@@ -78,31 +78,21 @@ class PlaylistAgents:
             step_callback=agent_callback if agent_callback is not None else None,
         )
 
-    # select songs on spotify
-    def spotify_song_finder(self):
+    def spotify_api_expert(self):
         return Agent(
-            role="Spotify Song Finder",
+            role="Spotify API Expert",
             backstory=dedent(
-                f"""Expert to search music on spotify database. I have experience in searching music on spotify finding uri."""
-            ),
-            goal=dedent(f"""Search song uri on spotify database"""),
-            tools=[SpotifyTools.search_songs_uris],
-            allow_delegation=False,
-            verbose=True,
-            llm=self.AzureChatOpenAI,
-        )
-
-    # create playlist on spotify
-    def spotify_playlist_creator(self):
-        return Agent(
-            role="Spotify Playlist Creator",
-            backstory=dedent(
-                f"""I have experience creating playlist in Spotify using the uris of the songs."""
+                f""" Expert to work with Spotify API. 
+                    I have experience in searching music on Spotify finding uri of the songs and 
+                    a year of experience to create playlist."""
             ),
             goal=dedent(
-                f"""Create a spotify playlist with the selected songs and save it for the user."""
+                f"""Find Uri of the songs on Spotify and create a playlist using uri."""
             ),
-            tools=[SpotifyTools.create_playlist_by_uris],
+            tools=[
+                SpotifyTools.search_songs_uris,
+                SpotifyTools.create_playlist_by_uris,
+            ],
             allow_delegation=False,
             verbose=True,
             llm=self.AzureChatOpenAI,
