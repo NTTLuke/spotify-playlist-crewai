@@ -49,9 +49,12 @@ class PlaylistAgents:
         return Agent(
             role="Expert Text Analyzer for music selection",
             backstory=dedent(
-                f"""Expert at analyzing text to pick the right information for searching appropriated songs. I have decades of experience understanding songs needed by text info."""
+                f"""Expert in analyzing text to select the correct information for finding appropriate songs.
+                    I have decades of experience in understanding songs based text info."""
             ),
-            goal=dedent(f"""Identify the person music needs based on a text."""),
+            goal=dedent(
+                f"""Identify songs the person needs based on the information provided by the text."""
+            ),
             allow_delegation=False,
             verbose=True,
             llm=self.AzureChatOpenAI,

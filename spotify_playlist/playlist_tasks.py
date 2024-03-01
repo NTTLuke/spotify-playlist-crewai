@@ -60,6 +60,8 @@ class PlaylistTasks:
                 
                 By carefully considering these details, we can create a playlist that perfectly matches the user's needs and preferences.
 
+                The result MUST be a query for serpapi endpoint.
+
                 **Parameters**:
                 - text_info : {text_info}
                 
