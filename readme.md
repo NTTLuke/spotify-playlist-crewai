@@ -4,10 +4,8 @@
 
 Learning by doing project to generate Spotify playlists using [CrewAi](https://github.com/joaomdmoura/crewAI).
 
-https://github.com/NTTLuke/spotify-playlist-crewai/assets/1864745/2e4b9e2b-9c3e-4b7b-acef-fb162c1df4c7
-
-
-
+### Demo
+[<video/>](https://github.com/NTTLuke/spotify-playlist-crewai/assets/1864745/2e4b9e2b-9c3e-4b7b-acef-fb162c1df4c7)
 
 ### Installation
 
