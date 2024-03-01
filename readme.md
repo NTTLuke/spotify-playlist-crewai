@@ -4,9 +4,11 @@
 
 Generate Spotify playlists using CrewAI.
 
+<video src="./assets/demo-spoty-crewai.mp4" width="640" height="360" controls></video>
+
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/spotify_playlist_creator.git`
+1. Clone the repository: `git clone https://github.com/NTTLuke/spotify-playlist-crewai.git`
 2. Install Poetry if you haven't already. You can follow the installation instructions on the Poetry website: [Poetry Installation Guide](https://python-poetry.org/docs/#installation).
 3. Install the required dependencies using Poetry:
    ```bash
@@ -67,11 +69,3 @@ http://localhost:8000/static/index.html
 > Spotify Playlist Creator
 
 - **Role**: Spotify Playlist Creator
-
-### Video
-
-TODO
-
-### License
-
-This project is licensed under the [MIT License](LICENSE).
