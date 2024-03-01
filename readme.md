@@ -2,7 +2,7 @@
 
 ### Description
 
-Learning by doing project to generate Spotify playlists using <a href="https://github.com/joaomdmoura/crewAI" target="_blank">CrewAi</a>.
+Learning by doing project to generate Spotify playlists using [CrewAi](https://github.com/joaomdmoura/crewAI).
 
 _Improvements WIP_
 
