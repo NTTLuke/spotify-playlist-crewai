@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Login Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f7;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+            white-space: nowrap;
+            align-content: center;
+        }
+
+        p {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: calc(100% - 24px);
+            height: 150px;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            resize: vertical;
+            font-size: 1em;
+        }
+
+        button {
+            background-color: #1db954;
+            color: #fff;
+            padding: 14px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #1ed760;
+        }
+
+        #statusMessage {
+            font-size: 1.1em;
+            color: #555;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #loginBtn {
+            background-color: #000;
+            color: #fff;
+            border-radius: 30px;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border: 2px solid #000;
+            transition: background-color 0.3s ease;
+        }
+
+        #loginBtn:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        #loginBtn i {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="loginSection">
+        <h2>Spotify Playlist Generator</h2>
+        <button id="loginBtn"><i class="fab fa-spotify"></i>Login with Spotify</button>
+        <p>(only premium accounts)</p>
+    </div>
+
+    <div class="container" id="formSection">
+        <h2>Create your Spotify playlist using <a href="https://github.com/joaomdmoura/crewAI"
+                target="_blank">CrewAi</a></h2>
+        <textarea id="textarea1"
+            placeholder="Describe yourself, your preferences or something you have in mind (e.g., favorite music genre, current mood, activity, wanna do)"
+            rows="6">I want to dance. I love rock music, and I'm feeling a bit down today. So, I need a playlist that can cheer me up.</textarea>
+        <button id="submitBtn">Let's create!</button>
+        <div id="statusMessage"></div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            if (window.location.hash.toLowerCase() === "#showform") {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('formSection').style.display = 'block';
+            } else {
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('formSection').style.display = 'none';
+            }
+        };
+
+        document.getElementById('loginBtn').onclick = function () {
+            window.location.href = '/login'; // Redirect to initiate the OAuth flow
+        };
+
+        document.getElementById('submitBtn').onclick = function () {
+            this.disabled = true;
+            let statusMessageDiv = document.getElementById('statusMessage');
+            statusMessageDiv.style.display = 'block';
+
+            axios.post('/submit-api', {
+                text_info: document.getElementById('textarea1').value
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(function (response) {
+                    const taskId = response.data.task_id;
+                    statusMessageDiv.innerText = 'Your playlist is on the way!';
+                })
+                .catch(function (error) {
+                    statusMessageDiv.innerText = 'Error submitting data';
+                })
+                .finally(() => {
+                    document.getElementById('submitBtn').disabled = false;
+                });
+        };
+    </script>
+</body>
+
+</html>
