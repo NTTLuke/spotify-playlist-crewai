@@ -5,8 +5,7 @@
 Learning by doing project to generate Spotify playlists using CrewAI.
 
 [Link to GitHub Repository](https://github.com/joaomdmoura/crewAI)
-
-<video src="./assets/demo-spoty-crewai.mp4" width="640" height="360" controls></video>
+[![Video Thumbnail](thumbnail_image_url)](./assets/demo-spoty-crewai.mp4)
 
 ### Installation
 
