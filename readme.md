@@ -2,7 +2,9 @@
 
 ### Description
 
-Generate Spotify playlists using CrewAI.
+Learning by doing project to generate Spotify playlists using CrewAI.
+
+[Link to GitHub Repository](https://github.com/joaomdmoura/crewAI)
 
 <video src="./assets/demo-spoty-crewai.mp4" width="640" height="360" controls></video>
 
