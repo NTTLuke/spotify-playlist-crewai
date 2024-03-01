@@ -1,12 +1,14 @@
 ## Spotify Playlist with CrewAI
+
 Learning by doing project to generate Spotify playlists using [CrewAi](https://github.com/joaomdmoura/crewAI).
 
 ### Description
-Sharing personal insights, including preferences and specific thoughts, aspects like your preferred music genre, current emotional state, activities you are engaged in, or particular needs you aim to satisfy.
-Agents will leverage this detailed information to craft a customized playlist. 
 
+Sharing personal insights, including preferences and specific thoughts, aspects like your preferred music genre, current emotional state, activities you are engaged in, or particular needs you aim to satisfy.
+Agents will leverage this detailed information to craft a customized playlist.
 
 (🥸 _Improvements WIP_ 🥸)
+
 ### Demo
 
 [<video/>](https://github.com/NTTLuke/spotify-playlist-crewai/assets/1864745/2e4b9e2b-9c3e-4b7b-acef-fb162c1df4c7)
@@ -22,21 +24,24 @@ Agents will leverage this detailed information to craft a customized playlist.
 4. Set up your environment variables by creating a `.env` file based on the provided `.env_example` file and adding your specific values:
 
    ```plaintext
+   # azure openai api key and endpoint
    AZURE_OPENAI_API_KEY = "your-azure-openai-api-key"
    AZURE_OPENAI_ENDPOINT = "your-azure-openai-endpoint"
    OPENAI_API_TYPE = "azure"
    OPENAI_API_VERSION = "your-azure-openai-api-version"
+   AZURE_OPENAI_DEPLOYMENT_NAME="your-azure-openai-deployment-name"
 
-   # SerpApi Key
+
    SERPER_API_KEY = "your-serper-api-key"
 
-   # Uncomment the following lines to use langsmith
+
+   # uncomment the following lines to use langsmith
    # LANGCHAIN_TRACING_V2=true
    # LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
    # LANGCHAIN_API_KEY=your-langchain-api-key
    # LANGCHAIN_PROJECT=your-langchain-project
 
-   # Spotify API credentials
+   # see https://developer.spotify.com/documentation/general/guides/app-settings/
    SPOTIFY_CLIENT_ID = "your-spotify-client-id"
    SPOTIFY_CLIENT_SECRET = "your-spotify-client-secret"
    ```
@@ -47,11 +52,19 @@ Agents will leverage this detailed information to craft a customized playlist.
 
 Start FastAPI and run the Spotify Playlist with CrewAI application, follow these steps:
 
+Run
+
+```bash
+poetry shell
+```
+
+then
+
 ```bash
 uvicorn --app-dir=spotify_playlist api:app --reload
 ```
 
-To test the application using the starting page provided at
+Test the application using the starting page provided at
 
 ```
 http://localhost:8000/static/index.html

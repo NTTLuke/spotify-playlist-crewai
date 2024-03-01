@@ -3,7 +3,7 @@ from textwrap import dedent
 
 
 # **********
-# I found this online ,
+# I found this online
 # **********
 # Creeating Tasks Cheat Sheet:
 # - Begin with the end in mind. Identify the specific outcome your tasks are aiming to achieve.

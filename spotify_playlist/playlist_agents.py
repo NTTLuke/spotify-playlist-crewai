@@ -5,10 +5,10 @@ from langchain.llms.ollama import Ollama
 from langchain_openai import AzureChatOpenAI
 from tools.search_tools import SearchTools
 from tools.spotify_tools import SpotifyTools
-
+import os
 
 # **********
-# I found this in anonline , it is very useful to understand how to create a crew of agents to accomplish a goal.
+# I found this online
 # **********
 # Creating Agents Cheat Sheet:
 # - Think like a boss. Work backwards from the goal and think about what kind of person you need to get the job done.
@@ -35,7 +35,7 @@ from tools.spotify_tools import SpotifyTools
 class PlaylistAgents:
     def __init__(self, llm_callback=None):
         self.AzureChatOpenAI = AzureChatOpenAI(
-            deployment_name="chat",
+            deployment_name=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
             temperature=0.7,
             streaming=True,
         )
