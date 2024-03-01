@@ -1,11 +1,12 @@
 ## Spotify Playlist with CrewAI
-
-### Description
-
 Learning by doing project to generate Spotify playlists using [CrewAi](https://github.com/joaomdmoura/crewAI).
 
-_Improvements WIP_
+### Description
+Sharing personal insights, including preferences and specific thoughts, aspects like your preferred music genre, current emotional state, activities you are engaged in, or particular needs you aim to satisfy.
+Agents will leverage this detailed information to craft a customized playlist. 
 
+
+(🥸 _Improvements WIP_ 🥸)
 ### Demo
 
 [<video/>](https://github.com/NTTLuke/spotify-playlist-crewai/assets/1864745/2e4b9e2b-9c3e-4b7b-acef-fb162c1df4c7)
@@ -55,21 +56,3 @@ To test the application using the starting page provided at
 ```
 http://localhost:8000/static/index.html
 ```
-
-### Agents involved
-
-> Expert Text Analyzer for music selection
-
-- **Role**: Expert Text Analyzer for music selection
-
-> Expert Music Curator
-
-- **Role**: Expert Music Curator
-
-> Spotify Song Finder
-
-- **Role**: Spotify Song Finder
-
-> Spotify Playlist Creator
-
-- **Role**: Spotify Playlist Creator
