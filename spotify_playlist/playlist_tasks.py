@@ -69,6 +69,7 @@ class PlaylistTasks:
                 """
             ),
             agent=agent,
+            expected_output="a string with the query for serpapi endpoint",
         )
 
     def search_for_songs(self, agent):
@@ -86,6 +87,7 @@ class PlaylistTasks:
                 """
             ),
             agent=agent,
+            expected_output="a list of strings",
         )
 
     def search_spotify_uri_songs(self, agent):
@@ -99,6 +101,7 @@ class PlaylistTasks:
                 """
             ),
             agent=agent,
+            expected_output="a list of strings with the uris of the songs",
         )
 
     def create_spotify_playlist(self, agent, access_token):
@@ -116,4 +119,5 @@ class PlaylistTasks:
                 """
             ),
             agent=agent,
+            expected_output="a string with the playlist id",
         )

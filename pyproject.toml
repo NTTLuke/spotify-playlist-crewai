@@ -6,12 +6,13 @@ authors = ["NTTLuke"]
 
 [tool.poetry.dependencies]
 python = ">=3.10.0,<=3.12.1"
-crewai = {extras = ["tools"], version = "^0.14.4"}
+crewai = {extras = ["tools"], version = "^0.22.5"}
 unstructured = '==0.10.25'
 pyowm = '3.3.0'
 python-dotenv = "1.0.0"
 setuptools = "^69.1.0"
 fastapi = "^0.109.2"
+uvicorn = "^0.28.0"
 
 
 [tool.pyright]
