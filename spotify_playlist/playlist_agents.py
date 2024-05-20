@@ -83,20 +83,3 @@ class PlaylistAgents:
             verbose=True,
             llm=self.AzureChatOpenAI,
         )
-
-    # def spotify_dj_expert(self):
-    #     return Agent(
-    #         role="Spotify DJ Expert",
-    #         backstory=dedent(
-    #             f"""You are a DJ Expert able to identify the device type where user wants to play the playlist and start playing the playlist created."""
-    #         ),
-    #         goal=dedent(
-    #             f"Play the playlist on the specific device of the user."
-    #             "The playlist_id has been already created by Spotify API Expert"
-    #             "The device_id is retrieved by the user's text."
-    #         ),
-    #         tools=[],
-    #         allow_delegation=False,
-    #         verbose=True,
-    #         llm=self.AzureChatOpenAI,
-    #     )
