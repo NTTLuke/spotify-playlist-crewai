@@ -1,35 +1,9 @@
 from crewai import Agent
 from textwrap import dedent
-
-from langchain.llms.ollama import Ollama
-from langchain_openai import AzureChatOpenAI
+from langchain_openai.chat_models.azure import AzureChatOpenAI
 from tools.search_tools import SearchTools
 from tools.spotify_tools import SpotifyTools
 import os
-
-# **********
-# I found this online
-# **********
-# Creating Agents Cheat Sheet:
-# - Think like a boss. Work backwards from the goal and think about what kind of person you need to get the job done.
-# - Define a Captain of the crew who orient the other agents towards the goal.
-# - Define which experts the captain needs to communicate with and delegate tasks to.
-#   Build on top down structure of the crew.
-
-#   GOAL:
-#     - Let's write the goal of the crew here.
-
-#   Captain/Manager/Boss
-#    - Role: The person who is responsible for the overall goal of the crew.
-
-#   Empleyees/Experts to hire:
-#   - who are the experts that the captain needs to communicate with and delegate tasks to.
-
-#   Notes:
-#     -Agents should be results driven and have a clear goal in mind.
-#     -Role is their job title.
-#     -Goals should be actionable.
-#     -Backstory should be their resume.
 
 
 class PlaylistAgents:
@@ -45,31 +19,35 @@ class PlaylistAgents:
         # self.OpenAIGPT4 = ChatOpenAI(model_name="gpt-4", temperature=0.7)
         # self.Ollama = Ollama(model="phi", num_gpu=1)
 
-    def expert_analyzing_text(self, agent_callback=None):
+    def expert_analyzing_text(self, agent_callback=None, callbacks=None):
         return Agent(
             role="Expert Text Analyzer for music selection",
             backstory=dedent(
-                f"""Expert in analyzing text to select the correct information for finding appropriate songs.
-                    I have decades of experience in understanding songs based text info."""
+                f"""I'm am an expert in analyzing textual information to accurately select music. 
+                    With decades of experience, I specialize in interpreting a wide range of textual data to identify 10 (TEN) songs that best match the provided context.
+                    I have decades of experience in understanding songs based text info.
+                """
             ),
             goal=dedent(
-                f"""Identify songs the person needs based on the information provided by the text."""
+                f"""My primary objective is to accurately identify and recommend songs based on the text provided. 
+                    I leverage my extensive experience and deep understanding of music-related text analysis to deliver relevant and tailored song selections that meet the user's needs and preferences."""
             ),
             allow_delegation=False,
             verbose=True,
             llm=self.AzureChatOpenAI,
             step_callback=agent_callback if agent_callback is not None else None,
+            callbacks=callbacks,
         )
 
     # select songs on internet
-    def expert_music_curator(self, agent_callback=None):
+    def expert_music_curator(self, agent_callback=None, callbacks=None):
         return Agent(
             role="Expert Music Curator",
             backstory=dedent(
                 f"""Expert at analyzing music data to pick ideal songs for a playlist considering the information provided by user. I have decades of experience understanding music trends."""
             ),
             goal=dedent(
-                f"""Search for 10 songs based on the user needs. 
+                f"""Search for 10 SONGS ONLY based on the user needs. 
                     Take care about current music trends.
                     Provide a search query to find the songs on the internet specific for the user needs.
                 """
@@ -79,6 +57,7 @@ class PlaylistAgents:
             verbose=True,
             llm=self.AzureChatOpenAI,
             step_callback=agent_callback if agent_callback is not None else None,
+            callbacks=callbacks,
         )
 
     def spotify_api_expert(self):
@@ -96,6 +75,21 @@ class PlaylistAgents:
                 SpotifyTools.search_songs_uris,
                 SpotifyTools.create_playlist_by_uris,
             ],
+            allow_delegation=False,
+            verbose=True,
+            llm=self.AzureChatOpenAI,
+        )
+
+    def spotify_dj_expert(self):
+        return Agent(
+            role="Spotify DJ Expert",
+            backstory=dedent(
+                f"""Expert to identify the device type where user wants to play the playlist and start playing the playlist created by the spotify_api_expert invoking the Spotify API.
+                    If the text doesn't contain any information about the preferred device type use my computer."""
+            ),
+            goal=dedent(
+                f"""Identify the device type where user wants to play the playlist based on the text received and start playing the playlist created."""
+            ),
             allow_delegation=False,
             verbose=True,
             llm=self.AzureChatOpenAI,

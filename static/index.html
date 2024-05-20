@@ -110,9 +110,15 @@
                 target="_blank">CrewAi</a></h2>
         <textarea id="textarea1"
             placeholder="Describe yourself, your preferences or something you have in mind (e.g., favorite music genre, current mood, activity, wanna do)"
-            rows="6">I want to dance. I love rock music, and I'm feeling a bit down today. So, I need a playlist that can cheer me up.</textarea>
+            rows="6">
+I want to dance. 
+I love 80s pop music, and I'm feeling a bit down today. 
+So, I need a playlist that can cheer me up.
+        </textarea>
         <button id="submitBtn">Let's create!</button>
-        <div id="statusMessage"></div>
+        <div id="statusMessage" style="display: none;">Streaming...</div>
+        <pre id="result"></pre>
+
     </div>
 
     <script>
@@ -153,6 +159,7 @@
                     document.getElementById('submitBtn').disabled = false;
                 });
         };
+
     </script>
 </body>
 

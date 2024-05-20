@@ -121,7 +121,7 @@ class SpotifyTools:
                 json=data,
             )
             if response.status_code == 201 or response.status_code == 200:
-                return f"Added songs to the playlist with id : {playlist_id}"
+                return f"Added songs to the playlist with playlist_id : {playlist_id}"
             else:
                 print(
                     "Failed to add songs to the playlist. Status code:",
@@ -133,8 +133,68 @@ class SpotifyTools:
             print("Failed to create playlist. Status code:", response.status_code)
             return None
 
+    @tool(
+        "Retrieve the device type id where to play the playlist",
+    )
+    def retrieve_device_type_id(access_token: str, device_type: str):
+        """Useful for retrieving the device type id from available user devices"""
 
-if __name__ == "__main__":
+        url = f"https://api.spotify.com/v1/me/player/devices?type={device_type}"
+
+        headers = {"Authorization": f"Bearer {access_token}"}
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200:
+            devices = response.json().get("devices", [])
+            if devices:
+                first_device_id = devices[0]["id"]
+                return f"This is the device_id found: {first_device_id}"
+        else:
+            return {"error": response.status_code, "message": response.text}
+
+    @tool(
+        "Play a playlist on Spotify",
+    )
+    def start_playing_playlist(access_token: str, playlist_id: str, device_id: str):
+        """Useful for initiating playback of a playlist identified by playlist_id and device_id"""
+        import time
+
+        time.sleep(2)
+        url = f"https://api.spotify.com/v1/me/player/play?device_id={device_id}"
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json",
+        }
+        data = {
+            "context_uri": f"spotify:playlist:{playlist_id}",
+        }
+
+        response = requests.put(url, headers=headers, json=data)
+
+        if response.status_code == 204:
+            return "Playback started successfully."
+        else:
+            print("Failed to start playback. Status code:", response.status_code)
+            return f"Failed to start playback: {response.status_code}"
+
+
+def test_create_playlist():
+    songs_uris = [
+        "spotify:track:37FjxvMhMjt3YRecpx7HsC",
+        "spotify:track:4191RXFPa7Ge9XkA4cWlna",
+    ]
+
+    access_token = ""
+
+    playlist_id = SpotifyTools.create_playlist_by_uris(
+        songs_uris, access_token, "NTTLuke Playlist using CrewAI"
+    )
+
+    print("Playlist ID:", playlist_id)
+
+
+def test_search_songs():
     # Replace with your client ID and client secret
     # client_id = os.environ["SPOTIFY_CLIENT_ID"]
     # client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
@@ -148,17 +208,24 @@ if __name__ == "__main__":
     #     client_id=os.environ["SPOTIFY_CLIENT_ID"],
     #     redirect_uri="http://localhost:3000/callback",
     # )
+    pass
 
-    ##CREATE PLAYLIST
-    songs_uris = [
-        "spotify:track:37FjxvMhMjt3YRecpx7HsC",
-        "spotify:track:4191RXFPa7Ge9XkA4cWlna",
-    ]
 
+def test_play_playlist():
+    # Replace with your access token and playlist ID
+    playlist_id = "4Tq15M8RsyHdMIsfkvYY98"
+
+    SpotifyTools.start_playing_playlist(access_token, playlist_id)
+
+
+def test_get_deviceid(access_token):
+
+    result = SpotifyTools.retrieve_device_type_id(access_token, "computer")
+    print(result)
+
+
+if __name__ == "__main__":
     access_token = ""
 
-    playlist_id = SpotifyTools.create_playlist_by_uris(
-        songs_uris, access_token, "NTTLuke Playlist using CrewAI"
-    )
-
-    print("Playlist ID:", playlist_id)
+    # test_play_playlist()
+    test_get_deviceid(access_token=access_token)

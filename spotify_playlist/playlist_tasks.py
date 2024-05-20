@@ -1,44 +1,6 @@
 from crewai import Task
 from textwrap import dedent
-
-
-# **********
-# I found this online
-# **********
-# Creeating Tasks Cheat Sheet:
-# - Begin with the end in mind. Identify the specific outcome your tasks are aiming to achieve.
-# - Break down the outcome inteo actionable tasks, assigin each task to the most qualified agent.
-# - Ensure tasks are descriptive, providing clear instructions and expected deliverables.
-
-# Goal:
-# > Example :
-
-# ## Key steps for Task Creation:
-# 1. Identity the desired outcome : Define what success looks like for your project
-# 2. Task Breakdown: Divide the goal into smaller, manageable tasks that agents can execute
-# 3. Assing Tasks to Agents: match tasks with agents based on their roles and expertise
-# 4. Task Description Template:
-#    - Use this template as a guide to define each task in your CrewAI application.
-#    - This template helps ensure that each task is clearly defined, actionable and aligned with the specific.
-
-# **TEMPLATE:**
-# ```python
-# def task_name(self, agent, [parameters]):
-#     return Task(
-#         description=dedent('''
-#             Do something as part of task 1
-
-#             {self.__tip_section()}
-
-#             Make sure to use the most recent data as possible.
-
-#             Use this variable: {var1}
-#             And also this variable: {var2}
-#         '''),
-#         ),
-#         agent=agent,
-#     )
-# ```
+from tools.spotify_tools import SpotifyTools
 
 
 class PlaylistTasks:
@@ -120,4 +82,47 @@ class PlaylistTasks:
             ),
             agent=agent,
             expected_output="a string with the playlist id",
+        )
+
+    def identify_the_device_type(self, agent, access_token, text_from_user):
+        return Task(
+            description=dedent(
+                f"""
+                **Task**: Identify the device to play the playlist
+                **Description**: Identify the device type where the user wants to play the playlist based on the text received. 
+                If no device type is specified, use computer. 
+                
+                Available device types are : computer, smartphone or speaker
+                
+                **Parameters**:
+                - Access Token: {access_token}
+                - Text from User: {text_from_user}
+
+                **Note**: {self.__tip_section()}
+                """
+            ),
+            agent=agent,
+            tools=[
+                SpotifyTools.retrieve_device_type_id,
+            ],
+            expected_output="The device type id where the playlist will be played.",
+        )
+
+    def starting_play_playlist(self, agent, access_token):
+        return Task(
+            description=dedent(
+                f"""
+                **Task**:Start the playlist on my device
+                **Description**: Play the playlist on the user's device using the Spotify API.               
+                **Parameters**:
+                - Access Token: {access_token}
+
+                **Note**: {self.__tip_section()}
+                """
+            ),
+            agent=agent,
+            tools=[
+                SpotifyTools.start_playing_playlist,
+            ],
+            expected_output="Information about the playlist playing on the user's device or an error message if the playlist could not be played.",
         )

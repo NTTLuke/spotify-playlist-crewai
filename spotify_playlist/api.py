@@ -26,7 +26,7 @@ app.add_middleware(
 CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 REDIRECT_URI = "http://localhost:8000/callback"
-SCOPES = "playlist-modify-private playlist-modify-public"
+SCOPES = "playlist-modify-private playlist-modify-public user-modify-playback-state user-read-playback-state"
 
 # Mount the static directory to serve static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -76,6 +76,19 @@ def callback(code: str, request: Request, response: Response) -> RedirectRespons
     return response
 
 
+from langchain_core.callbacks import BaseCallbackHandler
+
+
+class MyCustomHandler(BaseCallbackHandler):
+    from typing import Any, Dict
+    from langchain_core.agents import AgentFinish
+
+    def on_agent_finish(self, finish: AgentFinish, **kwargs: Any) -> Any:
+        """Run on agent end."""
+        print(f"Agent finished: {finish.return_values["output"]}")
+        return None
+
+
 def run_playlist_crew(
     text_info: str,
     access_token: str,
@@ -86,7 +99,7 @@ def run_playlist_crew(
         access_token=access_token,
     )
 
-    result = playlist_crew.run()
+    result = playlist_crew.run(callbacks=[MyCustomHandler()])
     print(result)
 
 

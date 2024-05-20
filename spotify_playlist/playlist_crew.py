@@ -8,19 +8,20 @@ class PlaylistCrew:
         self.access_token = access_token
         self.text_info = text_info
 
-    def run(self, llm_callback=None, agent_callback=None, crew_callback=None):
+    def run(
+        self, llm_callback=None, agent_callback=None, crew_callback=None, callbacks=None
+    ):
 
         agents = PlaylistAgents(llm_callback=llm_callback)
         tasks = PlaylistTasks()
 
         # Custom Agents definition
-        expert_text_analyzer = agents.expert_analyzing_text(
-            agent_callback=agent_callback
-        )
-        expert_music_curator = agents.expert_music_curator(
-            agent_callback=agent_callback
-        )
+        expert_text_analyzer = agents.expert_analyzing_text(callbacks=callbacks)
+        expert_music_curator = agents.expert_music_curator(callbacks=callbacks)
+
+        # Agents from the Spotify API
         spotify_api_expert = agents.spotify_api_expert()
+        spotify_dj_expert = agents.spotify_dj_expert()
 
         # Custom Tasks definition
         find_user_needs = tasks.extract_info_from_text(
@@ -35,18 +36,31 @@ class PlaylistCrew:
             self.access_token,
         )
 
+        identify_device_type = tasks.identify_the_device_type(
+            spotify_dj_expert,
+            self.access_token,
+            self.text_info,
+        )
+
+        play_playlist = tasks.starting_play_playlist(
+            spotify_dj_expert, self.access_token
+        )
+
         # My Crew
         crew = Crew(
             agents=[
                 expert_text_analyzer,
                 expert_music_curator,
                 spotify_api_expert,
+                spotify_dj_expert,
             ],
             tasks=[
                 find_user_needs,
                 find_songs,
                 search_spotify_uri_songs,
                 create_spotify_playlist,
+                identify_device_type,
+                play_playlist,
             ],
             verbose=True,
             step_callback=crew_callback if crew_callback is not None else None,
