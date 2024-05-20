@@ -232,7 +232,7 @@ def test_play_playlist(access_token: str):
 
 
 if __name__ == "__main__":
-    access_token = " BQD3e1iBbrifIf10wHhaiXH7oozOoxBG-CF8FxKhuC1B0Mhtw3ZYvYxt966XO1eAo3DxL4irWXdE7Hn-i4Y8QK8-pcWEPoEyJEJytO18ZH44gWtzX22LXqYa8Fk9qf6cGU2pNxRX0wuoXey80N0p4nMqtGnu-gTCMur4f4Bnon7LYfHoE5A2uUmai2EU8sLLcIs3kaJuqPe5PykLurWGphV6FN3TZqPhNK7fILTim_HWNjNAoQ"
+    access_token = ""
 
     # test_play_playlist()
     test_play_playlist(access_token=access_token)
