@@ -52,6 +52,7 @@ class PlaylistAgents:
                     Provide a search query to find the songs on the internet specific for the user needs.
                 """
             ),
+            max_iter=3,
             tools=[SearchTools.search_internet],
             allow_delegation=False,
             verbose=True,
@@ -64,33 +65,38 @@ class PlaylistAgents:
         return Agent(
             role="Spotify API Expert",
             backstory=dedent(
-                f""" Expert to work with Spotify API. 
+                f"""Expert to work with Spotify API. 
                     I have experience in searching music on Spotify finding uri of the songs and 
                     a year of experience to create playlist."""
             ),
             goal=dedent(
-                f"""Find Uri of the songs on Spotify and create a playlist using uri."""
+                f"""Find Uri of the songs on Spotify.
+                    Create a playlist using uri.
+                    Start playing the playlist on the specific device of the user."""
             ),
             tools=[
                 SpotifyTools.search_songs_uris,
                 SpotifyTools.create_playlist_by_uris,
+                SpotifyTools.start_playing_playlist,
             ],
             allow_delegation=False,
             verbose=True,
             llm=self.AzureChatOpenAI,
         )
 
-    def spotify_dj_expert(self):
-        return Agent(
-            role="Spotify DJ Expert",
-            backstory=dedent(
-                f"""Expert to identify the device type where user wants to play the playlist and start playing the playlist created by the spotify_api_expert invoking the Spotify API.
-                    If the text doesn't contain any information about the preferred device type use my computer."""
-            ),
-            goal=dedent(
-                f"""Identify the device type where user wants to play the playlist based on the text received and start playing the playlist created."""
-            ),
-            allow_delegation=False,
-            verbose=True,
-            llm=self.AzureChatOpenAI,
-        )
+    # def spotify_dj_expert(self):
+    #     return Agent(
+    #         role="Spotify DJ Expert",
+    #         backstory=dedent(
+    #             f"""You are a DJ Expert able to identify the device type where user wants to play the playlist and start playing the playlist created."""
+    #         ),
+    #         goal=dedent(
+    #             f"Play the playlist on the specific device of the user."
+    #             "The playlist_id has been already created by Spotify API Expert"
+    #             "The device_id is retrieved by the user's text."
+    #         ),
+    #         tools=[],
+    #         allow_delegation=False,
+    #         verbose=True,
+    #         llm=self.AzureChatOpenAI,
+    #     )

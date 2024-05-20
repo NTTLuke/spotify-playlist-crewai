@@ -91,12 +91,14 @@ class MyCustomHandler(BaseCallbackHandler):
 
 def run_playlist_crew(
     text_info: str,
+    autoplay_device: str,
     access_token: str,
 ):
     # Simulating a long-running task
     playlist_crew = PlaylistCrew(
         text_info=text_info,
         access_token=access_token,
+        autoplay_device=autoplay_device,
     )
 
     result = playlist_crew.run(callbacks=[MyCustomHandler()])
@@ -105,6 +107,7 @@ def run_playlist_crew(
 
 class Submission(BaseModel):
     text_info: str
+    autoplay_device: str
 
 
 @app.post("/submit-api")
@@ -114,6 +117,7 @@ async def handle_long_process(
     import uuid
 
     text_info = submission.text_info
+    autoplay_device = submission.autoplay_device
 
     # Extract the access token from the cookies
     access_token = request.cookies.get("accessToken")
@@ -121,7 +125,7 @@ async def handle_long_process(
         return {"error": "Refresh token not found"}
 
     task_id = str(uuid.uuid4())  # Generate a unique task ID
-    background_tasks.add_task(run_playlist_crew, text_info, access_token)
+    background_tasks.add_task(run_playlist_crew, text_info, autoplay_device, access_token)
     return {"message": "Task started, processing in the background", "task_id": task_id}
 
 

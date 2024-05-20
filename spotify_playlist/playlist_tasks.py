@@ -81,48 +81,25 @@ class PlaylistTasks:
                 """
             ),
             agent=agent,
-            expected_output="a string with the playlist id",
+            expected_output="a string with the playlist id created",
         )
 
-    def identify_the_device_type(self, agent, access_token, text_from_user):
+    def starting_play_playlist(
+        self, agent, access_token, autoplay_device: str = "none"
+    ):
         return Task(
             description=dedent(
                 f"""
-                **Task**: Identify the device to play the playlist
-                **Description**: Identify the device type where the user wants to play the playlist based on the text received. 
-                If no device type is specified, use computer. 
-                
-                Available device types are : computer, smartphone or speaker
-                
+                **Task**: Start playing the playlist on the specific device type. If the autoplay_device type is none then do not play the playlist.
+                **Description**: Start playing the playlist on the specific device type provided by the user.
+
                 **Parameters**:
                 - Access Token: {access_token}
-                - Text from User: {text_from_user}
-
+                - Autoplay Device: {autoplay_device}
+                
                 **Note**: {self.__tip_section()}
                 """
             ),
             agent=agent,
-            tools=[
-                SpotifyTools.retrieve_device_type_id,
-            ],
-            expected_output="The device type id where the playlist will be played.",
-        )
-
-    def starting_play_playlist(self, agent, access_token):
-        return Task(
-            description=dedent(
-                f"""
-                **Task**:Start the playlist on my device
-                **Description**: Play the playlist on the user's device using the Spotify API.               
-                **Parameters**:
-                - Access Token: {access_token}
-
-                **Note**: {self.__tip_section()}
-                """
-            ),
-            agent=agent,
-            tools=[
-                SpotifyTools.start_playing_playlist,
-            ],
             expected_output="Information about the playlist playing on the user's device or an error message if the playlist could not be played.",
         )

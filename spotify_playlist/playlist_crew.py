@@ -4,8 +4,9 @@ from crewai import Crew
 
 
 class PlaylistCrew:
-    def __init__(self, text_info, access_token):
+    def __init__(self, text_info, autoplay_device, access_token):
         self.access_token = access_token
+        self.autoplay_device = autoplay_device
         self.text_info = text_info
 
     def run(
@@ -21,7 +22,6 @@ class PlaylistCrew:
 
         # Agents from the Spotify API
         spotify_api_expert = agents.spotify_api_expert()
-        spotify_dj_expert = agents.spotify_dj_expert()
 
         # Custom Tasks definition
         find_user_needs = tasks.extract_info_from_text(
@@ -35,15 +35,8 @@ class PlaylistCrew:
             spotify_api_expert,
             self.access_token,
         )
-
-        identify_device_type = tasks.identify_the_device_type(
-            spotify_dj_expert,
-            self.access_token,
-            self.text_info,
-        )
-
         play_playlist = tasks.starting_play_playlist(
-            spotify_dj_expert, self.access_token
+            spotify_api_expert, self.access_token, self.autoplay_device
         )
 
         # My Crew
@@ -52,14 +45,12 @@ class PlaylistCrew:
                 expert_text_analyzer,
                 expert_music_curator,
                 spotify_api_expert,
-                spotify_dj_expert,
             ],
             tasks=[
                 find_user_needs,
                 find_songs,
                 search_spotify_uri_songs,
                 create_spotify_playlist,
-                identify_device_type,
                 play_playlist,
             ],
             verbose=True,
