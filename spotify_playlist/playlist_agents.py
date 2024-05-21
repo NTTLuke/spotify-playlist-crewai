@@ -52,7 +52,7 @@ class PlaylistAgents:
                     Provide a search query to find the songs on the internet specific for the user needs.
                 """
             ),
-            max_iter=3,
+            max_iter=4,
             tools=[SearchTools.search_internet],
             allow_delegation=False,
             verbose=True,
@@ -77,6 +77,22 @@ class PlaylistAgents:
             tools=[
                 SpotifyTools.search_songs_uris,
                 SpotifyTools.create_playlist_by_uris,
+            ],
+            allow_delegation=False,
+            verbose=True,
+            llm=self.AzureChatOpenAI,
+        )
+
+    def spotify_dj_expert(self):
+        return Agent(
+            role="Spotify DJ Expert",
+            backstory=dedent(
+                f"""I'm an expert DJ on Spotify. I have experience to play a playlist already created on Spotify and start playing on the specific device of the user."""
+            ),
+            goal=dedent(
+                f"""Start playing the playlist that already exists on the user's device."""
+            ),
+            tools=[
                 SpotifyTools.start_playing_playlist,
             ],
             allow_delegation=False,

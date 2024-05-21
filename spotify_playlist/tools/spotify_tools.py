@@ -142,9 +142,9 @@ class SpotifyTools:
             print("Failed to create playlist. Status code:", response.status_code)
             return None
 
-    @tool("Play the playlist on the specific device of the user")
+    @tool("Play the playlist that already exists on the specific device of the user")
     def start_playing_playlist(access_token: str, playlist_id: str, device_type: str):
-        """Useful for initiating playback of a playlist identified by playlist_id and device_type
+        """Useful for initiating playback of a playlist already created and identified by playlist_id and device_type
         access_token : str : The access token to authenticate the request
         playlist_id : str : The playlist id to play created previously
         device_type: str : The device type where to play the playlist (mobile, computer, speaker)
@@ -157,6 +157,8 @@ class SpotifyTools:
         headers = {"Authorization": f"Bearer {access_token}"}
 
         response = requests.get(url, headers=headers)
+        if device_type == "none":
+            return "User do not select any device to play the playlist."
 
         if response.status_code == 200:
             devices = response.json().get("devices", [])

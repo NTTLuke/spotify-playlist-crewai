@@ -2,12 +2,16 @@
 
 Learning by doing project to generate Spotify playlists using [CrewAi](https://github.com/joaomdmoura/crewAI).
 
+(🥸 _Improvements WIP_ 🥸)
+
 ### Description
 
 Sharing personal insights, including preferences and specific thoughts, aspects like your preferred music genre, current emotional state, activities you are engaged in, or particular needs you aim to satisfy.
-Agents will leverage this detailed information to craft a customized playlist.
+Agents will leverage this detailed information to craft a customized playlist with 10 songs.
 
-(🥸 _Improvements WIP_ 🥸)
+### Example of prompts
+
+"Create a playlist with Eurovision 2024 songs", "I need a rock mood for the day", "To the EDM moon" ...
 
 ### Demo
 
@@ -69,3 +73,9 @@ Test the application using the starting page provided at
 ```
 http://localhost:8000/static/index.html
 ```
+
+### Caveats for Autoplay Feature
+
+To use the new autoplay feature, you need to open the Spotify player on the selected device.
+
+**Note:** Occasionally, the player may not immediately receive the play signal. In such cases, simply click on the playlist (without starting it) to trigger autoplay.

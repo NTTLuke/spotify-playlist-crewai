@@ -66,7 +66,7 @@ class PlaylistTasks:
             expected_output="a list of strings with the uris of the songs",
         )
 
-    def create_spotify_playlist(self, agent, access_token):
+    def create_spotify_playlist(self, agent, access_token) -> Task:
         return Task(
             description=dedent(
                 f"""
@@ -85,7 +85,7 @@ class PlaylistTasks:
         )
 
     def starting_play_playlist(
-        self, agent, access_token, autoplay_device: str = "none"
+        self, agent, task_context, access_token, autoplay_device: str = "none"
     ):
         return Task(
             description=dedent(
@@ -101,5 +101,6 @@ class PlaylistTasks:
                 """
             ),
             agent=agent,
+            # context=[task_context],
             expected_output="Information about the playlist playing on the user's device or an error message if the playlist could not be played.",
         )
