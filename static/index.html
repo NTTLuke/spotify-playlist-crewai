@@ -110,9 +110,22 @@
                 target="_blank">CrewAi</a></h2>
         <textarea id="textarea1"
             placeholder="Describe yourself, your preferences or something you have in mind (e.g., favorite music genre, current mood, activity, wanna do)"
-            rows="6">I want to dance. I love rock music, and I'm feeling a bit down today. So, I need a playlist that can cheer me up.</textarea>
+            rows="6">
+I want to dance. 
+I love 80s pop music, and I'm feeling a bit down today. 
+So, I need a playlist that can cheer me up.
+        </textarea>
+        <div>
+            <p>Auto play on</p>
+            <label><input type="radio" name="device" value="none" checked> No Autoplay</label>
+            <label><input type="radio" name="device" value="computer"> Computer</label>
+            <label><input type="radio" name="device" value="smartphone"> Smartphone</label>
+            <p></p>
+        </div>
         <button id="submitBtn">Let's create!</button>
-        <div id="statusMessage"></div>
+        <div id="statusMessage" style="display: none;">Streaming...</div>
+        <pre id="result"></pre>
+
     </div>
 
     <script>
@@ -133,10 +146,13 @@
         document.getElementById('submitBtn').onclick = function () {
             this.disabled = true;
             let statusMessageDiv = document.getElementById('statusMessage');
+            let selectedDevice = document.querySelector('input[name="device"]:checked');
+
             statusMessageDiv.style.display = 'block';
 
             axios.post('/submit-api', {
-                text_info: document.getElementById('textarea1').value
+                text_info: document.getElementById('textarea1').value,
+                autoplay_device: selectedDevice ? selectedDevice.value : 'none'
             }, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -153,6 +169,7 @@
                     document.getElementById('submitBtn').disabled = false;
                 });
         };
+
     </script>
 </body>
 

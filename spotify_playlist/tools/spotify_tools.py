@@ -92,7 +92,16 @@ class SpotifyTools:
         access_token: str,
         playlist_name="made by NTTLuke (with CrewAI)",
     ):
-        """Userful to create a playlist on spotify by using the uris of the songs"""
+        """
+        Userful to create a playlist on spotify by using the uris of the songs and returns the playlist id
+
+        songs_uris : List[str] : The list of songs uris to add to the playlist
+        access_token : str : The access token to authenticate the request
+        playlist_name : str : The name of the playlist to create
+
+        Returns
+        the playlist id of the created playlist
+        """
 
         user_id = SpotifyTools.get_user_id(access_token)
 
@@ -121,7 +130,7 @@ class SpotifyTools:
                 json=data,
             )
             if response.status_code == 201 or response.status_code == 200:
-                return f"Added songs to the playlist with id : {playlist_id}"
+                return f"Created a new playlist with playlist_id : {playlist_id}"
             else:
                 print(
                     "Failed to add songs to the playlist. Status code:",
@@ -133,8 +142,74 @@ class SpotifyTools:
             print("Failed to create playlist. Status code:", response.status_code)
             return None
 
+    @tool("Play the playlist that already exists on the specific device of the user")
+    def start_playing_playlist(access_token: str, playlist_id: str, device_type: str):
+        """Useful for initiating playback of a playlist already created and identified by playlist_id and device_type
+        access_token : str : The access token to authenticate the request
+        playlist_id : str : The playlist id to play created previously
+        device_type: str : The device type where to play the playlist (mobile, computer, speaker)
+        """
 
-if __name__ == "__main__":
+        import time
+
+        url = f"https://api.spotify.com/v1/me/player/devices?type={device_type}"
+
+        headers = {"Authorization": f"Bearer {access_token}"}
+
+        response = requests.get(url, headers=headers)
+        if device_type == "none":
+            return "User do not select any device to play the playlist."
+
+        if response.status_code == 200:
+            devices = response.json().get("devices", [])
+            if devices:
+                for device in devices:
+                    if str.lower(device["type"]) != device_type.lower():
+                        continue
+
+                    device_id = device["id"]
+                    url = f"https://api.spotify.com/v1/me/player/play?device_id={device_id}"
+                    headers = {
+                        "Authorization": f"Bearer {access_token}",
+                        "Content-Type": "application/json",
+                    }
+                    data = {
+                        "context_uri": f"spotify:playlist:{playlist_id}",
+                    }
+
+                    time.sleep(2)
+
+                    response = requests.put(url, headers=headers, json=data)
+
+                    if response.status_code == 204:
+                        return "Playback started successfully."
+                    else:
+                        print(
+                            "Failed to start playback. Status code:",
+                            response.status_code,
+                        )
+                        return f"Failed to start playback: {response.status_code}"
+
+        else:
+            return {"error": response.status_code, "message": response.text}
+
+
+def test_create_playlist():
+    songs_uris = [
+        "spotify:track:37FjxvMhMjt3YRecpx7HsC",
+        "spotify:track:4191RXFPa7Ge9XkA4cWlna",
+    ]
+
+    access_token = ""
+
+    playlist_id = SpotifyTools.create_playlist_by_uris(
+        songs_uris, access_token, "NTTLuke Playlist using CrewAI"
+    )
+
+    print("Playlist ID:", playlist_id)
+
+
+def test_search_songs():
     # Replace with your client ID and client secret
     # client_id = os.environ["SPOTIFY_CLIENT_ID"]
     # client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
@@ -148,17 +223,18 @@ if __name__ == "__main__":
     #     client_id=os.environ["SPOTIFY_CLIENT_ID"],
     #     redirect_uri="http://localhost:3000/callback",
     # )
+    pass
 
-    ##CREATE PLAYLIST
-    songs_uris = [
-        "spotify:track:37FjxvMhMjt3YRecpx7HsC",
-        "spotify:track:4191RXFPa7Ge9XkA4cWlna",
-    ]
 
+def test_play_playlist(access_token: str):
+    # Replace with your access token and playlist ID
+    playlist_id = "3n0GcjIurtegGqxBqEzclF"
+
+    SpotifyTools.start_playing_playlist(access_token, playlist_id, "computer")
+
+
+if __name__ == "__main__":
     access_token = ""
 
-    playlist_id = SpotifyTools.create_playlist_by_uris(
-        songs_uris, access_token, "NTTLuke Playlist using CrewAI"
-    )
-
-    print("Playlist ID:", playlist_id)
+    # test_play_playlist()
+    test_play_playlist(access_token=access_token)
