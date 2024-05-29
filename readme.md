@@ -36,7 +36,7 @@ Agents will leverage this detailed information to craft a customized playlist wi
    AZURE_OPENAI_DEPLOYMENT_NAME="your-azure-openai-deployment-name"
 
    # openai api key
-   OPENAI_API_KEY = "your-openai-key-for-gpt4o"
+   OPENAI_API_KEY = "your-openai-key"
 
    # uncomment the following lines to use langsmith
    # LANGCHAIN_TRACING_V2=true
