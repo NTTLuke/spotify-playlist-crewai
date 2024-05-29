@@ -4,16 +4,17 @@ from crewai import Crew
 
 
 class PlaylistCrew:
-    def __init__(self, text_info, autoplay_device, access_token):
+    def __init__(self, text_info, model_name, autoplay_device, access_token):
         self.access_token = access_token
         self.autoplay_device = autoplay_device
+        self.model_name = model_name
         self.text_info = text_info
 
     def run(
         self, llm_callback=None, agent_callback=None, crew_callback=None, callbacks=None
     ):
 
-        agents = PlaylistAgents(llm_callback=llm_callback)
+        agents = PlaylistAgents(model_name=self.model_name, llm_callback=llm_callback)
         tasks = PlaylistTasks()
 
         # Agents definition

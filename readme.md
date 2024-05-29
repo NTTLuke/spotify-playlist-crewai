@@ -35,9 +35,8 @@ Agents will leverage this detailed information to craft a customized playlist wi
    OPENAI_API_VERSION = "your-azure-openai-api-version"
    AZURE_OPENAI_DEPLOYMENT_NAME="your-azure-openai-deployment-name"
 
-
-   SERPER_API_KEY = "your-serper-api-key"
-
+   # openai api key
+   OPENAI_API_KEY = "your-openai-key-for-gpt4o"
 
    # uncomment the following lines to use langsmith
    # LANGCHAIN_TRACING_V2=true
@@ -45,9 +44,13 @@ Agents will leverage this detailed information to craft a customized playlist wi
    # LANGCHAIN_API_KEY=your-langchain-api-key
    # LANGCHAIN_PROJECT=your-langchain-project
 
+   SERPER_API_KEY = "your-serper-api-key"
+
    # see https://developer.spotify.com/documentation/general/guides/app-settings/
    SPOTIFY_CLIENT_ID = "your-spotify-client-id"
    SPOTIFY_CLIENT_SECRET = "your-spotify-client-secret"
+
+
    ```
 
    Ensure you have registered your application with Spotify and obtained your client ID and client secret. Use http://localhost:8000/callback as Redirect URI. Refer to the [Spotify Developer Documentation](https://developer.spotify.com/documentation/general/guides/app-settings/) for instructions on how to create and configure your Spotify application. Additionally, you need to acquire your SerpApi key. Please refer to the [SerpApi Documentation](https://serpapi.com/) for more information on obtaining your API key.

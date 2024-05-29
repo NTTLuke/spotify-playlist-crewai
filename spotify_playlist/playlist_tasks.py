@@ -38,11 +38,14 @@ class PlaylistTasks:
         return Task(
             description=dedent(
                 f"""
-                **Task**: Curate a selection of 10 songs based on user needs, reflecting current music trends.
+                **Task**: Curate a selection of 10 songs based on user needs, reflecting music genre requested by the user.
                 **Description**: Your objective is to curate a playlist of 10 songs tailored to meet specific user preferences or needs. 
                 Each song should be carefully chosen to suit its designated situation, ensuring diversity and relevance. 
-                It's essential to select songs that are distinct from one another and align with prevalent tastes in today's music scene as of February 2024. 
-                If you find a playlist, you need to get the songs contained in it, not the playlist name. Don't search on youtube.com 
+                It's essential to select songs that are distinct from one another 
+                If NOT specified by user, songs must be aligned with prevalent tastes in today's music scene as of February 2024. 
+                If the user specifies a genre, year or mood, ensure that the songs selected reflect these preferences.
+                If you find a playlist, you need to get the songs contained in it, not the playlist name. 
+                DO NOT t search on youtube.com. 
                 Additionally, ensure that your playlist does not contain any duplicate songs, offering a unique listening experience throughout.
 
                 **Note**: {self.__tip_section()}

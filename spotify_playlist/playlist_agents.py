@@ -1,23 +1,34 @@
 from crewai import Agent
 from textwrap import dedent
 from langchain_openai.chat_models.azure import AzureChatOpenAI
+from langchain_openai.chat_models import ChatOpenAI
 from tools.search_tools import SearchTools
 from tools.spotify_tools import SpotifyTools
 import os
 
 
 class PlaylistAgents:
-    def __init__(self, llm_callback=None):
-        self.AzureChatOpenAI = AzureChatOpenAI(
-            deployment_name=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
-            temperature=0.7,
-            streaming=True,
-        )
-        if llm_callback:
-            self.AzureChatOpenAI.callbacks = [llm_callback]
-        # self.OpenAIGPT35 = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.7)
-        # self.OpenAIGPT4 = ChatOpenAI(model_name="gpt-4", temperature=0.7)
-        # self.Ollama = Ollama(model="phi", num_gpu=1)
+    def __init__(self, model_name: str, llm_callback=None):
+
+        if model_name not in [
+            "azure",
+            "gpt-4o",
+            "gpt-4-turbo",
+            "gpt-4",
+            "gpt-3.5-turbo",
+        ]:
+            raise ValueError(
+                "model_name must be one of ['azure', 'gpt-4o', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo']"
+            )
+
+        if model_name == "azure":
+            self.llm_model = AzureChatOpenAI(
+                deployment_name=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
+                temperature=0.7,
+                streaming=True,
+            )
+        else:
+            self.llm_model = ChatOpenAI(model_name=model_name, temperature=0.7)
 
     def expert_analyzing_text(self, agent_callback=None, callbacks=None):
         return Agent(
@@ -34,7 +45,7 @@ class PlaylistAgents:
             ),
             allow_delegation=False,
             verbose=True,
-            llm=self.AzureChatOpenAI,
+            llm=self.llm_model,
             step_callback=agent_callback if agent_callback is not None else None,
             callbacks=callbacks,
         )
@@ -48,7 +59,7 @@ class PlaylistAgents:
             ),
             goal=dedent(
                 f"""Search for 10 SONGS ONLY based on the user needs. 
-                    Take care about current music trends.
+                    Take care about music trends requested by the user.
                     Provide a search query to find the songs on the internet specific for the user needs.
                 """
             ),
@@ -56,7 +67,7 @@ class PlaylistAgents:
             tools=[SearchTools.search_internet],
             allow_delegation=False,
             verbose=True,
-            llm=self.AzureChatOpenAI,
+            llm=self.llm_model,
             step_callback=agent_callback if agent_callback is not None else None,
             callbacks=callbacks,
         )
@@ -80,7 +91,7 @@ class PlaylistAgents:
             ],
             allow_delegation=False,
             verbose=True,
-            llm=self.AzureChatOpenAI,
+            llm=self.llm_model,
         )
 
     def spotify_dj_expert(self):
@@ -97,5 +108,5 @@ class PlaylistAgents:
             ],
             allow_delegation=False,
             verbose=True,
-            llm=self.AzureChatOpenAI,
+            llm=self.llm_model,
         )
